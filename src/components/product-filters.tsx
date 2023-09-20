@@ -19,10 +19,6 @@ export default function ProductFilters({ categories, onChanges }: ProductFilters
             search: "",
             categoriesSlug: []
         },
-
-        validate: {
-
-        }
     });
 
     return (
