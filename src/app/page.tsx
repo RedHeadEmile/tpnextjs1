@@ -1,12 +1,23 @@
 import Image from 'next/image'
 import {PRODUCTS_CATEGORY_DATA} from "tp-kit/data";
 import {BreadCrumbs, Heading, ProductCardLayout, ProductGridLayout, SectionContainer} from "tp-kit/components";
+import ProductFilters from "@/components/product-filters";
+import {ProductFilterResult} from "@/types";
 
 export default function Home() {
   const categories = PRODUCTS_CATEGORY_DATA;
 
-  return (
-    <main>
+  const onChanges = (filters: ProductFilterResult) => {
+    console.log(filters)
+  };
+
+  return (<div className={"flex"}>
+    <aside>
+      <SectionContainer>
+        <ProductFilters categories={categories} onChanges={onChanges}></ProductFilters>
+      </SectionContainer>
+    </aside>
+    <main className={"flex-1"}>
       <BreadCrumbs items={ [{ label: 'Accueil', url: '/' }] } />
       { categories.map(category => {
         return <SectionContainer key={category.id}>
@@ -17,5 +28,5 @@ export default function Home() {
         </SectionContainer>
       }) }
     </main>
-  )
+  </div>)
 }
