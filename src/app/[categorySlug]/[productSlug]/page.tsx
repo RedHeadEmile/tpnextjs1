@@ -65,3 +65,21 @@ export default function ProductPage({ params, searchParams }: RoutePageProps<{ca
         </SectionContainer>
     </>
 }
+
+export function generateMetadata({ params }: RoutePageProps<{categorySlug: string, productSlug: string}>) {
+    const categorySlug = params.categorySlug;
+    const categoryAsArray = PRODUCTS_CATEGORY_DATA.filter(c => c.slug === categorySlug);
+    const category = categoryAsArray.find((_, i) => i === 0)
+
+    const productSlug = params.productSlug;
+    const product = category?.products.find(p => p.slug === productSlug);
+
+    let desc = product?.desc;
+    if (desc == undefined || desc.trim().length === 0)
+        desc = "Succombez pour notre " + product?.name + " et commandez-le sur notre site !"
+
+    return {
+        title: product?.name,
+        description: desc
+    }
+}
