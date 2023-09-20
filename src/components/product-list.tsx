@@ -26,7 +26,7 @@ export default function ProductList({ categories, showFilters }: ProductListProp
         <div className={"flex-1"}>
             { filteredCategories.map(category => {
                 return <SectionContainer key={category.id}>
-                    <Link href={category.slug} className={"link"}><Heading className={"my-4"} as={"h3"} weight={"bold"}>{ category.name + " (" + category.products.length + ")" }</Heading></Link>
+                    <Link href={"/" + category.slug} className={"link"}><Heading className={"my-4"} as={"h3"} weight={"bold"}>{ category.name + " (" + category.products.length + ")" }</Heading></Link>
                     <ProductGridLayout products={category.products} >
                         {product => <ProductCardLayout product={product}  button={"Ajouter au panier"}/>}
                     </ProductGridLayout>
