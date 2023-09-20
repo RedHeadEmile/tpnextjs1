@@ -1,0 +1,15 @@
+.table tr {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #777;
+    @apply py-4;
+}
+
+.table tr:last-child {
+    border-bottom: none;
+}
+
+.table td {
+    display: flex;
+    align-items: center;
+}
