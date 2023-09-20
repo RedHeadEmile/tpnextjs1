@@ -10,7 +10,7 @@ import {filterProducts} from "@/utils/filter-products";
 export default function ProductList() {
     const categories = PRODUCTS_CATEGORY_DATA;
     const [filters, setFilters] = useState(undefined as ProductFilterResult | undefined);
-    let filteredCategories = useMemo(() => filterProducts(categories, filters), [categories, filters]);
+    const filteredCategories = useMemo(() => filterProducts(categories, filters), [categories, filters]);
 
     return (<div className={"flex"}>
         <aside>
