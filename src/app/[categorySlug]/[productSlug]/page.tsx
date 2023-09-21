@@ -29,18 +29,22 @@ export default function ProductPage({ params, searchParams }: RoutePageProps<{ca
     ];
 
     return <>
-        <BreadCrumbs items={ [{ label: 'Accueil', url: '/' }, { label: category?.name ?? '', url: "/" + categorySlug }, { label: product?.name ?? '', url: productSlug }] } />
+        <SectionContainer background={"white"} className={"pb-0"}>
+            <BreadCrumbs items={ [{ label: 'Accueil', url: '/' }, { label: category?.name ?? '', url: "/" + categorySlug }, { label: product?.name ?? '', url: productSlug }] } />
+        </SectionContainer>
 
         { product !== undefined &&
         <div className={"flex justify-center gap-4"}>
             <div className={"overflow-hidden rounded-lg"}>
-                { /* Je fais confiance à votre composant */ }
-                <ProductImage
-                    className={"!w-full !h-auto"}
-                    height={300}
-                    width={300}
-                    {...product}
-                />
+                <div className={"overflow-hidden"}>
+                    { /* Je fais confiance à votre composant */ }
+                    <ProductImage
+                        className={"!w-full !h-auto"}
+                        height={300}
+                        width={300}
+                        {...product}
+                    />
+                </div>
             </div>
             <div className={"flex flex-col justify-between"}>
                 <div className={"prose flex flex-col"}>
@@ -57,10 +61,10 @@ export default function ProductPage({ params, searchParams }: RoutePageProps<{ca
         </div>
         }
 
-        <SectionContainer>
+        <SectionContainer background={"white"}>
             <Heading as={"h1"} weight={"bold"}>Vous aimerez aussi</Heading>
             <ProductGridLayout products={category?.products.filter(p => p.slug !== productSlug) ?? []} >
-                {product => <ProductCardLayout product={product} button={<Button variant={"white"}>Ajouter au panier</Button>}/>}
+                {product => <ProductCardLayout product={product} button={<Button className={"w-full bg-coffee-50 text-black hover:bg-coffee-200 active:bg-coffee-400"}>Ajouter au panier</Button>}/>}
             </ProductGridLayout>
         </SectionContainer>
     </>

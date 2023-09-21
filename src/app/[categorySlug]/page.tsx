@@ -1,8 +1,7 @@
-import { PRODUCTS_CATEGORY_DATA } from "tp-kit/data";
+import {PRODUCTS_CATEGORY_DATA} from "tp-kit/data";
 import ProductList from "@/components/product-list";
-import {BreadCrumbs} from "tp-kit/components";
+import {BreadCrumbs, SectionContainer} from "tp-kit/components";
 import {RoutePageProps} from "@/types";
-import {Metadata} from "next";
 
 export default function CategoryPage({ params, searchParams }: RoutePageProps<{categorySlug: string}>) {
     const categorySlug = params.categorySlug;
@@ -10,7 +9,9 @@ export default function CategoryPage({ params, searchParams }: RoutePageProps<{c
     const category = categoryAsArray.find((_, i) => i === 0)
 
     return <>
-        <BreadCrumbs items={ [{ label: 'Accueil', url: '/' }, { label: category?.name ?? '', url: categorySlug }] } />
+        <SectionContainer background={"white"} className={"pb-0"}>
+            <BreadCrumbs items={ [{ label: 'Accueil', url: '/' }, { label: category?.name ?? '', url: categorySlug }] } />
+        </SectionContainer>
         <ProductList categories={categoryAsArray}/>
         </>
 }

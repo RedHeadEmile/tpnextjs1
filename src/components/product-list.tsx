@@ -1,7 +1,7 @@
 "use client";
 
 import {ProductFilterResult} from "@/types";
-import {BreadCrumbs, Heading, ProductCardLayout, ProductGridLayout, SectionContainer} from "tp-kit/components";
+import {Button, Heading, ProductCardLayout, ProductGridLayout, SectionContainer} from "tp-kit/components";
 import ProductFilters from "@/components/product-filters";
 import {useMemo, useState} from "react";
 import {filterProducts} from "@/utils/filter-products";
@@ -19,16 +19,16 @@ export default function ProductList({ categories, showFilters }: ProductListProp
 
     return (<div className={"flex"}>
         { (showFilters ?? false) &&
-            <SectionContainer>
+            <SectionContainer background={"white"}>
                 <ProductFilters categories={categories} onChanges={setFilters}></ProductFilters>
             </SectionContainer>
         }
         <div className={"flex-1"}>
             { filteredCategories.map(category => {
-                return <SectionContainer key={category.id}>
+                return <SectionContainer background={"white"} key={category.id}>
                     <Link href={"/" + category.slug} className={"link"}><Heading className={"my-4"} as={"h3"} weight={"bold"}>{ category.name + " (" + category.products.length + ")" }</Heading></Link>
                     <ProductGridLayout products={category.products} >
-                        {product => <ProductCardLayout product={product}  button={"Ajouter au panier"}/>}
+                        {product => <ProductCardLayout product={product} button={<Button className={"w-full bg-coffee-50 text-black hover:bg-coffee-200 active:bg-coffee-400"}>Ajouter au panier</Button>}/>}
                     </ProductGridLayout>
                 </SectionContainer>
             }) }
