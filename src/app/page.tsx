@@ -7,6 +7,5 @@ export default function Home() {
   return <>
     <BreadCrumbs items={ [{ label: 'Accueil', url: '/' }] } />
     <ProductList categories={PRODUCTS_CATEGORY_DATA} showFilters={true}/>
-    <Footer />
     </>
 }

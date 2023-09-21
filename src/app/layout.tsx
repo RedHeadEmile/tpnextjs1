@@ -2,6 +2,8 @@ import './globals.css'
 import type { Metadata } from 'next'
 import {Lexend} from 'next/font/google'
 import Providers from "@/components/providers";
+import {Footer, MenuBar} from "tp-kit/components";
+import {Menu} from "@/components/menu";
 
 const lexend = Lexend({ subsets: ['latin'] })
 
@@ -21,7 +23,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={lexend.className}><Providers font={lexend}>{children}</Providers></body>
+      <body className={lexend.className}>
+        <Providers font={lexend}>
+          <Menu />
+          {children}
+          <Footer />
+        </Providers>
+      </body>
     </html>
   )
 }
