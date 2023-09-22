@@ -1,6 +1,17 @@
+import {ProductData} from "tp-kit/types";
+
 export interface ProductFilterResult {
-    categoriesSlug: string[]
+    categoriesSlug: string[];
     search?: string;
+}
+
+export interface ProductLineData {
+    product: ProductData;
+    qty: number
+}
+
+export interface CartData {
+    lines: ProductLineData[];
 }
 
 export type RoutePageProps<T = Record<string, string>> = {
