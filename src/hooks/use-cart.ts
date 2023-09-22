@@ -71,5 +71,6 @@ export function computeLineSubTotal(line: ProductLineData): number {
  * Calcule le total du panier
  */
 export function computeCartTotal(lines: ProductLineData[]): number {
+    if (lines.length === 0) return 0;
     return lines.map(computeLineSubTotal).reduce((a, b) => a + b);
 }

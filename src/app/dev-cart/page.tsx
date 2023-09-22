@@ -1,24 +1,14 @@
 "use client";
 import {PRODUCTS_CATEGORY_DATA} from "tp-kit/data";
 import {Button, ProductCardLayout, ProductCartLine, SectionContainer} from "tp-kit/components";
-import {ProductData} from "tp-kit/types";
-import {addLine, useCart} from "@/hooks/use-cart";
+import {addLine, computeCartTotal, removeLine, updateLine, useCart} from "@/hooks/use-cart";
 
 const products = PRODUCTS_CATEGORY_DATA[0].products.slice(0, 3);
 
 export default function DevCartPage() {
-    const onDelete = (product: ProductData) => {
-
-    };
-
-    const onQtyChange = (product: ProductData, qty: number) => {
-
-    };
-
     const lines = useCart(state => state.lines);
 
-    return (<>
-            <pre>{JSON.stringify(lines, null, 2)}</pre>
+    return (
         <SectionContainer
             className="py-36"
             wrapperClassName="flex flex-col lg:flex-row gap-24"
@@ -45,14 +35,21 @@ export default function DevCartPage() {
             <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white flex justify-center items-center">
                 <div className={"flex flex-col p-4 gap-7"}>
                     <span className={"font-bold"}>MON PANIER</span>
-                    { products.map((product, index) => <ProductCartLine key={index} product={product} onDelete={() => onDelete(product)} onQtyChange={qty => onQtyChange(product, qty)} qty={2} />) }
+                    { lines.map((line, index) =>
+                        <ProductCartLine
+                            key={index}
+                            product={line.product}
+                            onDelete={() => removeLine(line.product.id)}
+                            onQtyChange={qty => updateLine({...line, qty: qty })}
+                            qty={line.qty} />)
+                    }
                     <div className={"flex justify-between font-bold"}>
                         <span>Total</span>
-                        <span>19.51 €</span>
+                        <span>{ computeCartTotal(lines).toFixed(2).replace('.', ',') } €</span>
                     </div>
                     <Button>Commander</Button>
                 </div>
             </div>
-        </SectionContainer></>
+        </SectionContainer>
     );
 }
