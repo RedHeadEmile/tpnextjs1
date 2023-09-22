@@ -2,7 +2,7 @@ import {create} from "zustand";
 import {CartData, ProductLineData} from "@/types";
 import {ProductData} from "tp-kit/types";
 
-export const useCart = create<CartData>(() => ({ lines: [] }));
+export const useCart = create<CartData>(() => ({ lines: [], count: 0 }));
 
 /**
  * Ajoute une nouvelle ligne au panier.
@@ -17,7 +17,7 @@ export function addLine(product: ProductData) {
             state.lines.push({ product: product, qty: 1 })
         else
             existingLine.qty++;
-        return {...state, lines: [...state.lines] };
+        return {...state, lines: [...state.lines], count: state.lines.length };
     })
 }
 
@@ -31,8 +31,10 @@ export function updateLine(line: ProductLineData) {
         const existingLine = state.lines.find(line => line.product.id === line.product.id);
         if (existingLine !== undefined)
             existingLine.qty = line.qty;
-        else
+        else {
             state.lines.push(line);
+            state.count = state.lines.length;
+        }
         return {...state, lines: [...state.lines] };
     });
 }
@@ -46,7 +48,7 @@ export function updateLine(line: ProductLineData) {
 export function removeLine(productId: number) {
     useCart.setState((state: CartData) => {
         state.lines = state.lines.filter(line => line.product.id !== productId);
-        return {...state, lines: [...state.lines] };
+        return {...state, lines: [...state.lines], count: state.lines.length };
     });
 }
 
@@ -55,7 +57,7 @@ export function removeLine(productId: number) {
  */
 export function clearCart() {
     useCart.setState((state: CartData) => {
-        return {...state, lines: [] };
+        return {...state, lines: [], count: 0 };
     });
 }
 

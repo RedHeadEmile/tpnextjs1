@@ -3,6 +3,7 @@ import {PRODUCTS_CATEGORY_DATA} from "tp-kit/data";
 import {Button, ProductCardLayout, ProductCartLine, SectionContainer} from "tp-kit/components";
 import {addLine, computeCartTotal, removeLine, updateLine, useCart} from "@/hooks/use-cart";
 import {Cart} from "@/components/cart";
+import CartCounter from "@/components/cart-counter";
 
 const products = PRODUCTS_CATEGORY_DATA[0].products.slice(0, 3);
 
@@ -34,6 +35,7 @@ export default function DevCartPage() {
             {/* /Panier */}
 
             <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white flex justify-center items-center">
+                <CartCounter />
                 <Cart />
             </div>
         </SectionContainer>

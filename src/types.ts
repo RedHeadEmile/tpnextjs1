@@ -12,6 +12,7 @@ export interface ProductLineData {
 
 export interface CartData {
     lines: ProductLineData[];
+    count: number
 }
 
 export type RoutePageProps<T = Record<string, string>> = {
