@@ -1,9 +1,11 @@
 import {Button, ProductCartLine} from "tp-kit/components";
 import {computeCartTotal, removeLine, updateLine, useCart} from "@/hooks/use-cart";
+import CartCounter from "@/components/cart-counter";
 
 export function Cart() {
     const lines = useCart(state => state.lines);
     return <>
+        <CartCounter />
         <div className={"flex flex-col p-4 gap-7"}>
             <span className={"font-bold"}>MON PANIER</span>
             { lines.map((line, index) =>
