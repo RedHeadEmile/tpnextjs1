@@ -6,15 +6,17 @@ import {Popover, Transition} from '@headlessui/react'
 import {ShoppingCart, X} from "@phosphor-icons/react";
 import {Indicator} from "@mantine/core";
 import {stGreen} from 'tp-kit/tailwind/colors';
+import {Cart} from "@/components/cart";
+import CartCounter from "@/components/cart-counter";
 
 export function Menu() {
     return <MenuBar trailing={
             <div className={"relative flex justify-end items-center"}>
-                <Popover className="">
+                <Popover>
                     {({ open }) => (
                         <>
                             <Popover.Button>
-                                <Indicator inline label="0" color={stGreen.DEFAULT} size={20}>
+                                <Indicator inline label={<CartCounter />} color={stGreen.DEFAULT} size={20}>
                                     <div className={"m-2"}>
                                         { !open && <ShoppingCart size={22} /> }
                                         { open && <X size={22} /> }
@@ -30,9 +32,9 @@ export function Menu() {
                                 leaveFrom="opacity-100 translate-y-0"
                                 leaveTo="opacity-0 translate-y-1"
                             >
-                                <Popover.Panel className="absolute top-full left-0 right-0 mt-6">
-                                    <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white flex justify-center items-center">
-                                        <span className={"py-20"}>Votre panier est vide</span>
+                                <Popover.Panel className="absolute top-full left-0 right-0 mt-6 max-h-[80vh] flex">
+                                    <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 bg-white flex flex-grow">
+                                        <Cart />
                                     </div>
                                 </Popover.Panel>
                             </Transition>

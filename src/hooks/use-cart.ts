@@ -1,6 +1,7 @@
 import {create} from "zustand";
 import {CartData, ProductLineData} from "@/types";
 import {ProductData} from "tp-kit/types";
+import {wait} from "tp-kit/utils/wait";
 
 export const useCart = create<CartData>(() => ({ lines: [], count: 0 }));
 
@@ -10,7 +11,8 @@ export const useCart = create<CartData>(() => ({ lines: [], count: 0 }));
  *
  * @param product
  */
-export function addLine(product: ProductData) {
+export async function addLine(product: ProductData): Promise<void> {
+    await wait(1000);
     useCart.setState((state: CartData) => {
         const existingLine = state.lines.find(line => line.product.id === product.id);
         if (!existingLine)
@@ -28,7 +30,7 @@ export function addLine(product: ProductData) {
  */
 export function updateLine(line: ProductLineData) {
     useCart.setState((state: CartData) => {
-        const existingLine = state.lines.find(line => line.product.id === line.product.id);
+        const existingLine = state.lines.find(line1 => line1.product.id === line.product.id);
         if (existingLine !== undefined)
             existingLine.qty = line.qty;
         else {

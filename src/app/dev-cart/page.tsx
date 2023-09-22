@@ -4,6 +4,7 @@ import {Button, ProductCardLayout, ProductCartLine, SectionContainer} from "tp-k
 import {addLine, computeCartTotal, removeLine, updateLine, useCart} from "@/hooks/use-cart";
 import {Cart} from "@/components/cart";
 import CartCounter from "@/components/cart-counter";
+import AddToCartButton from "@/components/add-to-cart-button";
 
 const products = PRODUCTS_CATEGORY_DATA[0].products.slice(0, 3);
 
@@ -21,7 +22,7 @@ export default function DevCartPage() {
                     <ProductCardLayout
                         key={product.id}
                         product={product}
-                        button={<Button onClick={() => addLine(product)} variant={"ghost"} fullWidth>Ajouter au panier</Button>}
+                        button={<AddToCartButton product={product} />}
                     />
                 ))}
             </section>

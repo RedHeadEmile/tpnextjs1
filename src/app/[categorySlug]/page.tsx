@@ -3,7 +3,7 @@ import ProductList from "@/components/product-list";
 import {BreadCrumbs, SectionContainer} from "tp-kit/components";
 import {RoutePageProps} from "@/types";
 
-export default function CategoryPage({ params, searchParams }: RoutePageProps<{categorySlug: string}>) {
+export default function CategoryPage({ params }: RoutePageProps<{categorySlug: string}>) {
     const categorySlug = params.categorySlug;
     const categoryAsArray = PRODUCTS_CATEGORY_DATA.filter(c => c.slug === categorySlug);
     const category = categoryAsArray.find((_, i) => i === 0)

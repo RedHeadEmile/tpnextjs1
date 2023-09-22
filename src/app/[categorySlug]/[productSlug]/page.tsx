@@ -11,6 +11,7 @@ import {
     SectionContainer
 } from "tp-kit/components";
 import {ProductAttribute, ProductAttributesTable} from "@/components/product-attributes-table";
+import AddToCartButton from "@/components/add-to-cart-button";
 
 export default function ProductPage({ params, searchParams }: RoutePageProps<{categorySlug: string, productSlug: string}>) {
     const categorySlug = params.categorySlug;
@@ -53,7 +54,7 @@ export default function ProductPage({ params, searchParams }: RoutePageProps<{ca
                     <p>{product.desc}</p>
                     <div className={"flex justify-between align-middle mt-auto"}>
                         <span>{product.price}€</span>
-                        <Button>Ajouter au panier</Button>
+                        <AddToCartButton variant={"primary"} product={product} />
                     </div>
                 </div>
                 <ProductAttributesTable attributes={mockAttributes} />
@@ -64,7 +65,7 @@ export default function ProductPage({ params, searchParams }: RoutePageProps<{ca
         <SectionContainer background={"white"}>
             <Heading as={"h1"} weight={"bold"}>Vous aimerez aussi</Heading>
             <ProductGridLayout products={category?.products.filter(p => p.slug !== productSlug) ?? []} >
-                {product => <ProductCardLayout product={product} button={<Button className={"w-full bg-coffee-50 text-black hover:bg-coffee-200 active:bg-coffee-400"}>Ajouter au panier</Button>}/>}
+                {product => <ProductCardLayout product={product} button={<AddToCartButton product={product} className={"w-full"} />}/>}
             </ProductGridLayout>
         </SectionContainer>
     </>

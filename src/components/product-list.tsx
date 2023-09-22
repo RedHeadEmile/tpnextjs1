@@ -7,6 +7,7 @@ import {useMemo, useState} from "react";
 import {filterProducts} from "@/utils/filter-products";
 import {ProductsCategoryData} from "tp-kit/types";
 import Link from "next/link";
+import AddToCartButton from "@/components/add-to-cart-button";
 
 export interface ProductListProps {
     categories: ProductsCategoryData[],
@@ -28,7 +29,7 @@ export default function ProductList({ categories, showFilters }: ProductListProp
                 return <SectionContainer background={"white"} key={category.id}>
                     <Link href={"/" + category.slug} className={"link"}><Heading className={"my-4"} as={"h3"} weight={"bold"}>{ category.name + " (" + category.products.length + ")" }</Heading></Link>
                     <ProductGridLayout products={category.products} >
-                        {product => <ProductCardLayout product={product} button={<Button className={"w-full bg-coffee-50 text-black hover:bg-coffee-200 active:bg-coffee-400"}>Ajouter au panier</Button>}/>}
+                        {product => <ProductCardLayout product={product} button={<AddToCartButton className={"w-full"} product={product} />}/>}
                     </ProductGridLayout>
                 </SectionContainer>
             }) }
