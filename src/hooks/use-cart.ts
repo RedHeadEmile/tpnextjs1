@@ -17,7 +17,6 @@ export function addLine(product: ProductData) {
             state.lines.push({ product: product, qty: 1 })
         else
             existingLine.qty++;
-        console.log(state);
         return {...state, lines: [...state.lines] };
     })
 }
