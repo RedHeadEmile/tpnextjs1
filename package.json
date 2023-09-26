@@ -26,5 +26,8 @@
   },
   "workspaces": [
     "tp-kit"
-  ]
+  ],
+  "devDependencies": {
+    "prisma": "^5.3.1"
+  }
 }
