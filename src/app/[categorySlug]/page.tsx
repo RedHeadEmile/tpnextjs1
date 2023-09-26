@@ -1,28 +1,38 @@
-import {PRODUCTS_CATEGORY_DATA} from "tp-kit/data";
 import ProductList from "@/components/product-list";
 import {BreadCrumbs, SectionContainer} from "tp-kit/components";
 import {RoutePageProps} from "@/types";
+import {ProductsCategoryData} from "tp-kit/types";
+import prisma from "@/utils/prisma";
+import {notFound} from "next/navigation";
+import {cache} from "react";
 
-export default function CategoryPage({ params }: RoutePageProps<{categorySlug: string}>) {
-    const categorySlug = params.categorySlug;
-    const categoryAsArray = PRODUCTS_CATEGORY_DATA.filter(c => c.slug === categorySlug);
-    const category = categoryAsArray.find((_, i) => i === 0)
+const getCategory = cache(async (categorySlug: string) => {
+    console.log("getCategory")
+    const category = await prisma.productCategory.findUnique({ include: { products: {} }, where: { slug: categorySlug } })
+    if (!category) {
+        notFound();
+    }
+
+    return category as ProductsCategoryData;
+});
+
+export default async function CategoryPage({ params }: RoutePageProps<{categorySlug: string}>) {
+    const category = await getCategory(params.categorySlug);
+    const categoryAsArray = [category];
 
     return <>
         <SectionContainer background={"white"} className={"pb-0"}>
-            <BreadCrumbs items={ [{ label: 'Accueil', url: '/' }, { label: category?.name ?? '', url: categorySlug }] } />
+            <BreadCrumbs items={ [{ label: 'Accueil', url: '/' }, { label: category.name, url: params.categorySlug }] } />
         </SectionContainer>
         <ProductList categories={categoryAsArray}/>
         </>
 }
 
-export function generateMetadata({ params }: RoutePageProps<{categorySlug: string}>) {
-    const categorySlug = params.categorySlug;
-    const categoryAsArray = PRODUCTS_CATEGORY_DATA.filter(c => c.slug === categorySlug);
-    const category = categoryAsArray.find((_, i) => i === 0)
+export async function generateMetadata({ params }: RoutePageProps<{categorySlug: string}>) {
+    const category = await getCategory(params.categorySlug);
 
     return {
-        title: category?.name,
+        title: category.name,
         description: "Trouvez votre inspiration avec un vaste choix de boissons Starbucks parmi nos produits " + category?.name
     }
 }
