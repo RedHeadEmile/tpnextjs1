@@ -1,13 +1,15 @@
 import ProductList from "@/components/product-list";
-import {PRODUCTS_CATEGORY_DATA} from "tp-kit/data";
-import {BreadCrumbs, Footer, SectionContainer} from "tp-kit/components";
+import prisma from "@/utils/prisma";
+import {BreadCrumbs, SectionContainer} from "tp-kit/components";
+import {ProductsCategoryData} from "tp-kit/types";
 
-export default function Home() {
+export default async function Home() {
+  const categories: ProductsCategoryData[] = (await prisma.productCategory.findMany({ include: { products: {} } }));
 
   return <>
     <SectionContainer background={"white"} className={"pb-0"}>
       <BreadCrumbs items={ [{ label: 'Accueil', url: '/' }] } />
     </SectionContainer>
-    <ProductList categories={PRODUCTS_CATEGORY_DATA} showFilters={true}/>
+    <ProductList categories={categories} showFilters={true}/>
     </>
 }
