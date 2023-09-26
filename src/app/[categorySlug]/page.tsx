@@ -9,9 +9,8 @@ import {cache} from "react";
 const getCategory = cache(async (categorySlug: string) => {
     console.log("getCategory")
     const category = await prisma.productCategory.findUnique({ include: { products: {} }, where: { slug: categorySlug } })
-    if (!category) {
+    if (!category)
         notFound();
-    }
 
     return category as ProductsCategoryData;
 });

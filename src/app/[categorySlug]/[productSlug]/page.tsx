@@ -1,8 +1,6 @@
 import {RoutePageProps} from "@/types";
-import {PRODUCTS_CATEGORY_DATA} from "tp-kit/data";
 import {
     BreadCrumbs,
-    Button,
     Heading,
     ProductCardLayout,
     ProductGridLayout,
@@ -12,14 +10,21 @@ import {
 } from "tp-kit/components";
 import {ProductAttribute, ProductAttributesTable} from "@/components/product-attributes-table";
 import AddToCartButton from "@/components/add-to-cart-button";
+import {cache} from "react";
+import prisma from "@/utils/prisma";
+import {notFound} from "next/navigation";
+import {ProductData, ProductsCategoryData} from "tp-kit/types";
 
-export default function ProductPage({ params, searchParams }: RoutePageProps<{categorySlug: string, productSlug: string}>) {
-    const categorySlug = params.categorySlug;
-    const categoryAsArray = PRODUCTS_CATEGORY_DATA.filter(c => c.slug === categorySlug);
-    const category = categoryAsArray.find((_, i) => i === 0)
+const getCategoryAndProduct = cache(async (categorySlug: string, productSlug: string) => {
+    const product = await prisma.product.findUnique({ where: { slug: productSlug }, include: { category: { include: { products: { where: { NOT: [ { slug: productSlug } ] } } } } } })
+    if (!product)
+        notFound();
 
-    const productSlug = params.productSlug;
-    const product = category?.products.find(p => p.slug === productSlug);
+    return [product.category as ProductsCategoryData, product as ProductData] as const;
+});
+
+export default async function ProductPage({ params }: RoutePageProps<{categorySlug: string, productSlug: string}>) {
+    const [category, product] = await getCategoryAndProduct(params.categorySlug, params.productSlug);
 
     const mockAttributes: ProductAttribute[] = [
         { label: "Intensité", rating: 3 },
@@ -31,10 +36,9 @@ export default function ProductPage({ params, searchParams }: RoutePageProps<{ca
 
     return <>
         <SectionContainer background={"white"} className={"pb-0"}>
-            <BreadCrumbs items={ [{ label: 'Accueil', url: '/' }, { label: category?.name ?? '', url: "/" + categorySlug }, { label: product?.name ?? '', url: productSlug }] } />
+            <BreadCrumbs items={ [{ label: 'Accueil', url: '/' }, { label: category.name, url: "/" + params.categorySlug }, { label: product.name, url: params.productSlug }] } />
         </SectionContainer>
 
-        { product !== undefined &&
         <div className={"flex justify-center gap-4"}>
             <div className={"overflow-hidden rounded-lg"}>
                 <div className={"overflow-hidden"}>
@@ -60,31 +64,25 @@ export default function ProductPage({ params, searchParams }: RoutePageProps<{ca
                 <ProductAttributesTable attributes={mockAttributes} />
             </div>
         </div>
-        }
 
         <SectionContainer background={"white"}>
             <Heading as={"h1"} weight={"bold"}>Vous aimerez aussi</Heading>
-            <ProductGridLayout products={category?.products.filter(p => p.slug !== productSlug) ?? []} >
+            <ProductGridLayout products={category.products} >
                 {product => <ProductCardLayout product={product} button={<AddToCartButton product={product} className={"w-full"} />}/>}
             </ProductGridLayout>
         </SectionContainer>
     </>
 }
 
-export function generateMetadata({ params }: RoutePageProps<{categorySlug: string, productSlug: string}>) {
-    const categorySlug = params.categorySlug;
-    const categoryAsArray = PRODUCTS_CATEGORY_DATA.filter(c => c.slug === categorySlug);
-    const category = categoryAsArray.find((_, i) => i === 0)
+export async function generateMetadata({ params }: RoutePageProps<{categorySlug: string, productSlug: string}>) {
+    const [category, product] = await getCategoryAndProduct(params.categorySlug, params.productSlug);
 
-    const productSlug = params.productSlug;
-    const product = category?.products.find(p => p.slug === productSlug);
-
-    let desc = product?.desc;
+    let desc = product.desc;
     if (desc == undefined || desc.trim().length === 0)
-        desc = "Succombez pour notre " + product?.name + " et commandez-le sur notre site !"
+        desc = "Succombez pour notre " + product.name + " et commandez-le sur notre site !"
 
     return {
-        title: product?.name,
+        title: product.name,
         description: desc
     }
 }
