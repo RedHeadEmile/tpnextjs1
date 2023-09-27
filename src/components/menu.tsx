@@ -3,15 +3,17 @@
 import {MenuBar} from "tp-kit/components";
 import {Fragment, useState} from "react";
 import {Popover, Transition} from '@headlessui/react'
-import {ShoppingCart, X} from "@phosphor-icons/react";
+import {ShoppingCart, User, X} from "@phosphor-icons/react";
 import {Indicator} from "@mantine/core";
 import {stGreen} from 'tp-kit/tailwind/colors';
 import {Cart} from "@/components/cart";
 import CartCounter from "@/components/cart-counter";
+import Link from "next/link";
 
 export function Menu() {
     return <MenuBar trailing={
             <div className={"relative flex justify-end items-center"}>
+                <Link href={"/mon-compte"}><User size={22} /></Link>
                 <Popover>
                     {({ open }) => (
                         <>

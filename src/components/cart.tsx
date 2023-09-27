@@ -1,8 +1,15 @@
 import {Button, ProductCartLine} from "tp-kit/components";
-import {computeCartTotal, removeLine, updateLine, useCart} from "@/hooks/use-cart";
+import {clearCart, computeCartTotal, removeLine, updateLine, useCart} from "@/hooks/use-cart";
+import submit from "@/actions/create-orders";
 
 export function Cart() {
     const lines = useCart(state => state.lines);
+
+    const placeOrder = async() => {
+        await submit(lines)
+        clearCart();
+    };
+
     return <>
         <div className={"flex flex-col p-4 gap-7 w-full"}>
             <span className={"font-bold"}>MON PANIER</span>
@@ -20,7 +27,7 @@ export function Cart() {
                 <span>Total</span>
                 <span>{ computeCartTotal(lines).toFixed(2).replace('.', ',') } €</span>
             </div>
-            <Button>Commander</Button>
+            <Button onClick={placeOrder}>Commander</Button>
         </div>
     </>;
 }

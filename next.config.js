@@ -7,6 +7,10 @@ const nextConfig = {
                 hostname: 'www.starbucks.fr',
             },
         ],
+    },
+
+    experimental: {
+        serverActions: true
     }
 }
 
