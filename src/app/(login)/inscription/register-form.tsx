@@ -3,8 +3,9 @@
 import {PasswordInput, TextInput} from "@mantine/core";
 import {useForm, zodResolver} from "@mantine/form";
 import {z} from "zod";
-import {Button} from "tp-kit/components";
+import {Button, NoticeMessage} from "tp-kit/components";
 import Link from "next/link";
+import {useState} from "react";
 
 const schema = z.object({
   name: z.string().nonempty({ message: 'Le champ est requis' }),
@@ -13,6 +14,9 @@ const schema = z.object({
 });
 
 export default function RegisterFormComponent() {
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [showEmailAlreadyInUse, setShowEmailAlreadyInUse] = useState(false);
+
   const form = useForm({
     initialValues: {
       name: '',
@@ -25,10 +29,15 @@ export default function RegisterFormComponent() {
 
   const onRegister = (values: { name: string, email: string, password: string }) => {
     console.log(values);
+    setShowSuccess(true);
   };
 
-  return <div className={"bg-white shadow flex flex-col m-5 p-4 gap-5 min-w-[25rem]"}>
+  return <div className={"bg-white shadow flex flex-col m-5 p-4 gap-5 max-w-[27rem] w-[100%]"}>
     <h1 className={"uppercase"}>Inscription</h1>
+    { showSuccess && <NoticeMessage message={<span>Votre inscription a bien été prise en compte.<br/>Validez votre adresse email pour vous connecter.</span>}
+                   type={"success"} /> }
+    { showEmailAlreadyInUse && <NoticeMessage message={"Cette adresse email n'est pas disponible"}
+                   type={"error"} /> }
     <form onSubmit={form.onSubmit(onRegister)} className={"flex flex-col gap-3"}>
       <TextInput
           withAsterisk
