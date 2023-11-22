@@ -3,15 +3,16 @@
 import {PasswordInput, TextInput} from "@mantine/core";
 import {useForm, zodResolver} from "@mantine/form";
 import {z} from "zod";
-import {Button} from "tp-kit/components";
+import {Button, useZodI18n} from "tp-kit/components";
 import Link from "next/link";
 
 const schema = z.object({
-  email: z.string().nonempty({ message: 'Le champ est requis' }).email({ message: 'Email invalide' }),
-  password: z.string().nonempty({ message: 'Le champ est requis' }).min(6, { message: 'Le mot de passe est trop court' })
+  email: z.string().nonempty().email(),
+  password: z.string().nonempty().min(6)
 });
 
 export default function LoginFormComponent() {
+  useZodI18n(z);
   const form = useForm({
     initialValues: {
       email: '',
@@ -37,7 +38,7 @@ export default function LoginFormComponent() {
       <PasswordInput
           withAsterisk
           label={"Mot de passe"}
-          placeholder={"Ke$$a..."}
+          placeholder={"Ke$$a1234"}
           {...form.getInputProps('password')}
       />
 

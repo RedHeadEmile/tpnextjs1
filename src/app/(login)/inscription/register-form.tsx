@@ -3,20 +3,21 @@
 import {PasswordInput, TextInput} from "@mantine/core";
 import {useForm, zodResolver} from "@mantine/form";
 import {z} from "zod";
-import {Button, NoticeMessage} from "tp-kit/components";
+import {Button, NoticeMessage, useZodI18n} from "tp-kit/components";
 import Link from "next/link";
 import {useState} from "react";
 
 const schema = z.object({
-  name: z.string().nonempty({ message: 'Le champ est requis' }),
-  email: z.string().nonempty({ message: 'Le champ est requis' }).email({ message: 'Email invalide' }),
-  password: z.string().nonempty({ message: 'Le champ est requis' }).min(6, { message: 'Le mot de passe est trop court' })
+  name: z.string().nonempty(),
+  email: z.string().nonempty().email(),
+  password: z.string().nonempty().min(6)
 });
 
 export default function RegisterFormComponent() {
   const [showSuccess, setShowSuccess] = useState(false);
   const [showEmailAlreadyInUse, setShowEmailAlreadyInUse] = useState(false);
 
+  useZodI18n(z);
   const form = useForm({
     initialValues: {
       name: '',
@@ -55,7 +56,7 @@ export default function RegisterFormComponent() {
       <PasswordInput
           withAsterisk
           label={"Mot de passe"}
-          placeholder={"Ke$$a..."}
+          placeholder={"Ke$$a1234"}
           {...form.getInputProps('password')}
       />
 
