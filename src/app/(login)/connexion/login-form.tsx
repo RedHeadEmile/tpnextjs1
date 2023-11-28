@@ -3,8 +3,11 @@
 import {PasswordInput, TextInput} from "@mantine/core";
 import {useForm, zodResolver} from "@mantine/form";
 import {z} from "zod";
-import {Button, useZodI18n} from "tp-kit/components";
+import {Button, NoticeMessage, useZodI18n} from "tp-kit/components";
 import Link from "next/link";
+import {createClientComponentClient} from "@supabase/auth-helpers-nextjs";
+import {useRouter} from "next/navigation";
+import {useState} from "react";
 
 const schema = z.object({
   email: z.string().nonempty().email(),
@@ -12,6 +15,11 @@ const schema = z.object({
 });
 
 export default function LoginFormComponent() {
+  const router = useRouter();
+  const supabase = createClientComponentClient();
+
+  const [showLoginFailed, setShowLoginFailed] = useState(false);
+
   useZodI18n(z);
   const form = useForm({
     initialValues: {
@@ -22,12 +30,26 @@ export default function LoginFormComponent() {
     validate: zodResolver(schema)
   });
 
-  const onLogin = (values: { email: string, password: string }) => {
-    console.log(values);
+  const onLogin = async (values: { email: string, password: string }) => {
+    try {
+      const response = await supabase.auth.signInWithPassword({
+        email: values.email,
+        password: values.password
+      });
+
+      if (!response.error)
+        router.refresh();
+      else
+        setShowLoginFailed(true);
+    }
+    catch {
+      alert('Une erreur est survenue lors de l\'appel au serveur.');
+    }
   };
 
   return <div className={"bg-white shadow flex flex-col m-5 p-4 gap-5 min-w-[25rem]"}>
     <h1 className={"uppercase"}>Connexion</h1>
+    { showLoginFailed && <NoticeMessage type={"error"} message={<span>Email/Mot de passe invalide</span>} /> }
     <form onSubmit={form.onSubmit(onLogin)} className={"flex flex-col gap-3"}>
       <TextInput
           withAsterisk

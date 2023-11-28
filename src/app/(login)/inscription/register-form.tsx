@@ -39,7 +39,6 @@ export default function RegisterFormComponent() {
     setShowEmailAlreadyInUse(false);
 
     try {
-      console.log(`${window.location.origin}/api/auth/callback`);
       const authResponse = await supabase.auth.signUp({
         email: values.email,
         password: values.password,
