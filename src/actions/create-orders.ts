@@ -23,7 +23,7 @@ export default async function submit(lines: CartLine[]): Promise<SubmitResponse>
 
     if (lines.length == 0)
         return;
-    
+
     let total = lines.map(computeLineSubTotal).reduce((a, b) => a + b);
     const order = await prisma.order.create({
         data: {
