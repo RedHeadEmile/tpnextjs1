@@ -3,14 +3,31 @@
 import {CartLine} from "tp-kit/types";
 import prisma from "@/utils/prisma";
 import {computeLineSubTotal} from "@/hooks/use-cart";
+import {createServerComponentClient} from "@supabase/auth-helpers-nextjs";
+import {cookies} from "next/headers";
+import {getUser} from "@/utils/supabase";
 
-export default async function submit(lines: CartLine[]) {
-    let total = 0;
-    if (lines.length > 0)
-        total = lines.map(computeLineSubTotal).reduce((a, b) => a + b);
+export type SubmitResponse = {
+    error: string | null,
+    success: boolean
+};
 
+export default async function submit(lines: CartLine[]): Promise<SubmitResponse> {
+    const supabase = createServerComponentClient({ cookies });
+    const user = await getUser(supabase);
+    if (!user)
+        return {
+            error: 'Vous devez être connecté pour exécuter cette action',
+            success: false
+        };
+
+    if (lines.length == 0)
+        return;
+    
+    let total = lines.map(computeLineSubTotal).reduce((a, b) => a + b);
     const order = await prisma.order.create({
         data: {
+            userId: user.id,
             createdAt: new Date(),
             total: total
         }
@@ -26,4 +43,6 @@ export default async function submit(lines: CartLine[]) {
             }
         })
     });
+
+    return { success: true };
 }

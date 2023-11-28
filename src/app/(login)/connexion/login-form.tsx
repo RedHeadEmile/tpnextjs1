@@ -31,6 +31,8 @@ export default function LoginFormComponent() {
   });
 
   const onLogin = async (values: { email: string, password: string }) => {
+    setShowLoginFailed(false);
+
     try {
       const response = await supabase.auth.signInWithPassword({
         email: values.email,
