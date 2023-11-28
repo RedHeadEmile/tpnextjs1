@@ -27,3 +27,9 @@ export type RoutePageProps<T = Record<string, string>> = {
      */
     searchParams: { [key: string]: string | string[] | undefined }
 };
+
+declare module "@supabase/supabase-js" {
+    export interface UserMetadata {
+        name?: string
+    }
+}

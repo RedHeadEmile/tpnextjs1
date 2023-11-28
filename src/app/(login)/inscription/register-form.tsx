@@ -5,7 +5,8 @@ import {useForm, zodResolver} from "@mantine/form";
 import {z} from "zod";
 import {Button, NoticeMessage, useZodI18n} from "tp-kit/components";
 import Link from "next/link";
-import {useState} from "react";
+import {FormEvent, useState} from "react";
+import {createClientComponentClient} from "@supabase/auth-helpers-nextjs";
 
 const schema = z.object({
   name: z.string().nonempty(),
@@ -13,7 +14,10 @@ const schema = z.object({
   password: z.string().nonempty().min(6)
 });
 
+type RegistrationData = z.infer<typeof schema>;
+
 export default function RegisterFormComponent() {
+  const supabase = createClientComponentClient();
   const [showSuccess, setShowSuccess] = useState(false);
   const [showEmailAlreadyInUse, setShowEmailAlreadyInUse] = useState(false);
 
@@ -28,9 +32,32 @@ export default function RegisterFormComponent() {
     validate: zodResolver(schema)
   });
 
-  const onRegister = (values: { name: string, email: string, password: string }) => {
-    console.log(values);
-    setShowSuccess(true);
+  const onRegister = async (values: RegistrationData, event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    setShowSuccess(false);
+    setShowEmailAlreadyInUse(false);
+
+    try {
+      console.log(`${window.location.origin}/api/auth/callback`);
+      const authResponse = await supabase.auth.signUp({
+        email: values.email,
+        password: values.password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/api/auth/callback`,
+          data: {
+            name: values.name
+          }
+        },
+      });
+      if (!authResponse.error)
+          setShowSuccess(true);
+      else
+          setShowEmailAlreadyInUse(true);
+    }
+    catch {
+      alert('Une erreur est survenue lors de l\'appel au serveur.');
+    }
   };
 
   return <div className={"bg-white shadow flex flex-col m-5 p-4 gap-5 max-w-[27rem] w-[100%]"}>
