@@ -9,10 +9,14 @@ import {redirect} from "next/navigation";
 import LogoutButton from "@/app/mon-compte/logout-button";
 
 export default async function MonCompteLayout({ children }: { children: React.ReactNode }) {
-    const orders: OrderTableRowData[] = await prisma.order.findMany();
-
     const supabase = createServerComponentClient({ cookies });
     const user = (await getUser(supabase));
+
+    const orders: OrderTableRowData[] = await prisma.order.findMany({
+        where: {
+            userId: user?.id
+        }
+    });
 
     if (!user)
         redirect('/connexion');
