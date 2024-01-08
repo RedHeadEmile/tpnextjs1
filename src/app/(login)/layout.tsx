@@ -13,3 +13,5 @@ export default async function LoginLayout( {children}: { children: React.ReactNo
 
   return <ZodI18nProvider>{children}</ZodI18nProvider>
 }
+
+export const dynamic = "force-dynamic"

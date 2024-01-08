@@ -3,6 +3,6 @@
 @tailwind utilities;
 
 .link {
-    @apply transition-colors hover:text-brand active:text-brand-950 cursor-pointer
+    @apply transition-colors hover:text-brand /*active:text-brand-950*/ cursor-pointer
 }
 

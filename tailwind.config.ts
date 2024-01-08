@@ -1,9 +1,11 @@
 import type { Config } from 'tailwindcss'
 
 // Starbucks green color shades
-import {stGreen} from 'tp-kit/tailwind/colors';
+// import {stGreen} from 'tp-kit/tailwind/colors';
 // Gray color from TailwindCSS
 import {gray} from 'tailwindcss/colors';
+
+const stGreen = "#388a6b";
 
 const config: Config = {
   content: [

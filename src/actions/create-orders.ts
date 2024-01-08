@@ -8,7 +8,7 @@ import {cookies} from "next/headers";
 import {getUser} from "@/utils/supabase";
 
 export type SubmitResponse = {
-    error: string | null,
+    error?: string,
     success: boolean
 };
 
@@ -22,7 +22,10 @@ export default async function submit(lines: CartLine[]): Promise<SubmitResponse>
         };
 
     if (lines.length == 0)
-        return;
+        return {
+            error: 'Vous n\'avez aucune ligne dans votre commande',
+            success: false
+        };
 
     let total = lines.map(computeLineSubTotal).reduce((a, b) => a + b);
     const order = await prisma.order.create({

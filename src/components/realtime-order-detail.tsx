@@ -28,7 +28,7 @@ export default function RealTimeOrderDetail({ order }: { order: OrderData }) {
         .subscribe();
 
     return () => { channel.unsubscribe().then(r => {}); };
-  }, [supabase]);
+  }, [order.id, supabase]);
 
   return <OrderDetailsLayout order={realTimeOrder} />;
 }

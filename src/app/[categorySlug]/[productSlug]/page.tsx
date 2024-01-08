@@ -86,3 +86,15 @@ export async function generateMetadata({ params }: RoutePageProps<{categorySlug:
         description: desc
     }
 }
+
+export async function generateStaticParams() {
+    const categories: ProductsCategoryData[] = await prisma.productCategory.findMany({ include: { products: {} } });
+    const flattenProducts = [];
+    for (let category of categories)
+        for (let product of category.products)
+            flattenProducts.push({
+                categorySlug: category.slug,
+                productSlug: product.slug
+            });
+    return categories;
+}

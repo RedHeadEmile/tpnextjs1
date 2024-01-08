@@ -2,7 +2,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 import {Lexend} from 'next/font/google'
 import Providers from "@/components/providers";
-import {Footer, MenuBar} from "tp-kit/components";
+import {Footer} from "tp-kit/components";
 import {Menu} from "@/components/menu";
 
 const lexend = Lexend({ subsets: ['latin'] })

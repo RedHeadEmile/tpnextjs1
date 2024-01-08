@@ -1,7 +1,6 @@
 "use client";
 import {PRODUCTS_CATEGORY_DATA} from "tp-kit/data";
-import {Button, ProductCardLayout, ProductCartLine, SectionContainer} from "tp-kit/components";
-import {addLine, computeCartTotal, removeLine, updateLine, useCart} from "@/hooks/use-cart";
+import {Button, ProductCardLayout, SectionContainer} from "tp-kit/components";
 import {Cart} from "@/components/cart";
 import CartCounter from "@/components/cart-counter";
 import AddToCartButton from "@/components/add-to-cart-button";

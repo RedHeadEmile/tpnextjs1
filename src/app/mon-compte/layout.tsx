@@ -41,3 +41,5 @@ export default async function MonCompteLayout({ children }: { children: React.Re
         { children }
     </>
 }
+
+export const dynamic = "force-dynamic"

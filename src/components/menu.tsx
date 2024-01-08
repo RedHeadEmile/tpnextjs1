@@ -5,7 +5,6 @@ import {Fragment, useEffect, useState} from "react";
 import {Popover, Transition} from '@headlessui/react'
 import {ShoppingCart, User, X} from "@phosphor-icons/react";
 import {Indicator} from "@mantine/core";
-import {stGreen} from 'tp-kit/tailwind/colors';
 import {Cart} from "@/components/cart";
 import CartCounter from "@/components/cart-counter";
 import Link from "next/link";
@@ -31,7 +30,7 @@ export function Menu() {
         {({open}) => (
             <>
               <Popover.Button>
-                <Indicator inline label={<CartCounter/>} color={stGreen.DEFAULT} size={20}>
+                <Indicator inline label={<CartCounter/>} color={"#388a6b"} size={20}>
                   <div className={"m-2"}>
                     {!open && <ShoppingCart size={22}/>}
                     {open && <X size={22}/>}
